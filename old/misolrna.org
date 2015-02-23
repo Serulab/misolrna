@@ -1,0 +1,80 @@
+#
+#  Example.com (/etc/apache2/sites-available/www.example.com)
+#
+NameVirtualHost misolrna.org
+
+<VirtualHost *:80>
+
+ServerAdmin sbassi@genesdigitales.com
+ServerName  www.misolrna.org
+ServerAlias misolrna.org
+
+# Indexes + Directory Root.
+DirectoryIndex index.html
+DocumentRoot /var/www/misolrna.org/htdocs/
+
+AddHandler cgi-script .py .cgi
+
+WSGIScriptAlias / /var/www/misolrna.org/htdocs/index.wsgi
+
+
+# CGI Directory
+#ScriptAlias /cgi-bin/ /home/www/www.example.com/cgi-bin/
+
+<Location /var/www/misolrna.org>
+AllowOverride None
+Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+Order allow,deny
+Allow from all  
+</Location>
+
+#<location /var/www/misolrna.org/htdocs>
+#PythonPath "sys.path+['/var/www/misolrna.org/htdocs']"
+#</location>
+
+# Logfiles
+ErrorLog  /var/www/misolrna.org/logs/error.log
+#CustomLog /home/www/www.example.com/logs/access.log combined
+</VirtualHost>
+
+
+<VirtualHost *:80>
+        
+ServerAdmin sbassi@genesdigitales.com
+ServerName  img.misolrna.org
+
+# Indexes + Directory Root.
+DirectoryIndex index.html
+DocumentRoot "/var/www/misolrna.org/htdocs/img/"
+
+<Location /var/www/misolrna.org/htdocs/img>
+AllowOverride None
+Options -MultiViews +SymLinksIfOwnerMatch
+Order allow,deny
+Allow from all  
+</Location>
+
+# Logfiles
+ErrorLog  /var/www/misolrna.org/logs/imgerror.log
+</VirtualHost>
+
+<VirtualHost *:80>
+        
+ServerAdmin sbassi@genesdigitales.com
+ServerName  fix.misolrna.org
+
+# Indexes + Directory Root.
+DirectoryIndex index.html
+DocumentRoot "/var/www/misolrna.org/htdocs/fix/"
+
+<Location /var/www/misolrna.org/htdocs/fix>
+AllowOverride None
+Options -MultiViews +SymLinksIfOwnerMatch
+Order allow,deny
+Allow from all  
+</Location>
+
+# Logfiles
+ErrorLog  /var/www/misolrna.org/logs/fixerror.log
+</VirtualHost>
+
