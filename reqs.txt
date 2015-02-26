@@ -4,6 +4,4 @@ biopython==1.65
 bottle==0.12.8
 distribute==0.6.24
 resolver==0.2.1
-selector==0.10.1
 wsgiref==0.1.2
-yaro==0.6.4

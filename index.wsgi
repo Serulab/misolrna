@@ -2,16 +2,16 @@
 
 # LICENSE: AGPL 3.0. Sebastian Bassi
 
-from selector import Selector
-from yaro import Yaro
 from tempfile import mkstemp
 from bottle import SimpleTemplate
 from bottle import route, run, view, static_file
 
+from settings import *
+
 import sys
 sys.path.append("/var/www/misolrna.org/htdocs")
 from dbconn import TempTables, DBInterac
-from index_template import index_template as it
+#from index_template import index_template as it
 from cStringIO import StringIO
 from Bio.Blast.Applications import NcbiblastnCommandline as blastcli
 from Bio.Blast import NCBIXML
@@ -30,6 +30,8 @@ imgdir = 'http://img.%s/'%BASE_URL
 imgdirFS = '/var/www/%s/htdocs/img/'%BASE_URL
 staticFS = '/var/www/%s/htdocs/img/static/'%BASE_URL
 
+#static_root = ''
+
 mirandaoutfile = '/root/misol/modificado/miRanda-1.9/src/mirandafull75plus'
 
 #os.chdir(rootdir)
@@ -44,15 +46,15 @@ def index():
 
 @route('/static/css/<filename>')
 def css_static(filename):
-    return static_file(filename, root='/home/sbassi/projects/misolrna/static/css/')
+    return static_file(filename, root='%scss/'%static_root)
 
 @route('/static/fonts/<filename>')
 def fonts_static(filename):
-    return static_file(filename, root='/home/sbassi/projects/misolrna/static/fonts/')
+    return static_file(filename, root='%sfonts/'%static_root)
 
 @route('/static/js/<filename>')
 def js_static(filename):
-    return static_file(filename, root='/home/sbassi/projects/misolrna/static/js/')    
+    return static_file(filename, root='%sjs/'%static_root)    
 
 def search(req):
     dataout = it(searchList=[{'page_type': 'search', 'page_title' : 'Search miRNA'}])
@@ -392,7 +394,7 @@ def targetResult(req):
 # root@ubuntu:/var/www/sebastianbassi.com/htdocs# cp index_template.py /usr/lib/python2.5/site-packages/
 
 def blastresult_ax(req):
-    from Cheetah.Template import Template
+    #from Cheetah.Template import Template
     
     template_s = '''<h2>Blast result</h2><p></p>
 #if $lblast:
@@ -463,7 +465,7 @@ BLAST 2.2.23 release (BMC Bioinformatics 2009, 10:421 doi:10.1186/1471-2105-10-4
     d['lblast'] = lblast
     cl = (' '.join(cli)).replace('/var/www/%s/htdocs/'%BASE_URL,'')
     d['cl'] = cl
-    dataout = Template(template_s, searchList=[d])
+    ##dataout = Template(template_s, searchList=[d])
     return str(dataout)
     
 
@@ -650,7 +652,7 @@ def keywordResult(req):
     conn.close()
     return str(dataout)
     
-    
+'''    
 s = Selector(wrap=Yaro)
 #s.add('/', GET=index)
 s.add('/status', GET=status)
@@ -678,7 +680,7 @@ s.add('/microResult/{mirna}', GET=microResult)
 
 
 application = s
-
+'''
 run(host='localhost', port=8080)
 
 
