@@ -6,7 +6,7 @@ from tempfile import mkstemp
 from bottle import SimpleTemplate
 from bottle import route, run, view, static_file
 
-from settings import *
+#from settings import *
 
 import sys
 sys.path.append("/var/www/misolrna.org/htdocs")
@@ -22,6 +22,27 @@ import os
 import sys
 import cPickle
 import subprocess
+import argparse
+
+
+sys.path.append('settings')
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-s','--settings', help='setting file',required=True)
+args = parser.parse_args()
+
+
+settings = __import__(args.settings)
+#import args.settings
+#with open(args.settings) as fh:
+    #eval(fh)
+    #eval(fh.read())
+
+print settings.static_root
+kk
+
+
+
 
 BASE_URL = 'misolrna.org'
 dbname = '/var/www/%s/htdocs/mirna20.db'%BASE_URL
