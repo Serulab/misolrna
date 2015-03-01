@@ -6,12 +6,9 @@ from tempfile import mkstemp
 from bottle import SimpleTemplate
 from bottle import route, run, view, static_file
 
-#from settings import *
-
 import sys
 sys.path.append("/var/www/misolrna.org/htdocs")
 from dbconn import TempTables, DBInterac
-#from index_template import index_template as it
 from cStringIO import StringIO
 from Bio.Blast.Applications import NcbiblastnCommandline as blastcli
 from Bio.Blast import NCBIXML
@@ -30,34 +27,16 @@ sys.path.append('settings')
 parser = argparse.ArgumentParser()
 parser.add_argument('-s','--settings', help='setting file',required=True)
 args = parser.parse_args()
-
-
 settings = __import__(args.settings)
-#import args.settings
-#with open(args.settings) as fh:
-    #eval(fh)
-    #eval(fh.read())
 
-print settings.static_root
-kk
-
-
-
-
-BASE_URL = 'misolrna.org'
-dbname = '/var/www/%s/htdocs/mirna20.db'%BASE_URL
-rootdir = '/var/www/%s/htdocs/'%BASE_URL
-imgdir = 'http://img.%s/'%BASE_URL
-imgdirFS = '/var/www/%s/htdocs/img/'%BASE_URL
-staticFS = '/var/www/%s/htdocs/img/static/'%BASE_URL
-
-#static_root = ''
-
-mirandaoutfile = '/root/misol/modificado/miRanda-1.9/src/mirandafull75plus'
+BASE_URL = settings.BASE_URL
+ROOT_DIR = settings.ROOT_DIR
+DB_NAME = settings.DB_NAME
+STATIC_ROOT = settings.STATIC_ROOT
 
 #os.chdir(rootdir)
 
-expression_s = set(['SGN-U577351.png', 'SGN-U317177.png', 'SGN-U577190.png', 'SGN-U581590.png', 'SGN-U564920.png', 'SGN-U314861.png', 'SGN-U564413.png', 'U217520.png', 'SGN-U580201.png', 'SGN-U219318.png', 'SGN-U575153.png', 'SGN-U225755.png', 'SGN-U573423.png', 'SGN-U315828.png', 'SGN-U573225.png', 'SGN-U579174.png', 'SGN-U580203.png', 'SGN-U576708.png', 'SGN-U579797.png', 'SGN-U313725.png', 'SGN-U313497.png', 'SGN-U574086.png', 'SGN-U312490.png', 'SGN-U567211.png', 'SGN-U315756.png', 'SGN-U319311.png'])
+EXPRESSION_S = settings.EXPRESSION_S
 
 @route('/')
 @view('index.tmp')
@@ -67,15 +46,15 @@ def index():
 
 @route('/static/css/<filename>')
 def css_static(filename):
-    return static_file(filename, root='%scss/'%static_root)
+    return static_file(filename, root='%scss/'%STATIC_ROOT)
 
 @route('/static/fonts/<filename>')
 def fonts_static(filename):
-    return static_file(filename, root='%sfonts/'%static_root)
+    return static_file(filename, root='%sfonts/'%STATIC_ROOT)
 
 @route('/static/js/<filename>')
 def js_static(filename):
-    return static_file(filename, root='%sjs/'%static_root)    
+    return static_file(filename, root='%sjs/'%STATIC_ROOT)  
 
 def search(req):
     dataout = it(searchList=[{'page_type': 'search', 'page_title' : 'Search miRNA'}])
@@ -93,82 +72,20 @@ def about(req):
     dataout = it(searchList=[{'page_type': 'about', 'page_title' : 'About Us'}])
     return str(dataout)
 
-
-def rss(req):
-    return open(rootdir+'rss.xml').read()    
-
-def data3(req):
-    return open(rootdir+'data3.js').read()
-    
+'''
 def toolt(req):
     return open(rootdir+'toolt.js').read()    
-    
-def part1(req):
-    yield open(rootdir+'part1.fasta').read()    
-    
-def part2(req):
-    yield open(rootdir+'part2.fasta').read()        
-    
-def part3(req):
-    yield open(rootdir+'part3.fasta').read()        
-    
+        
 def basiccss(req):
     return open(rootdir+'basic.css').read()
 
 def tabscss(req):
     return open(rootdir+'tabs.css').read() 
-
-
-def in4m(req):
-    yield open(staticFS+'in4m.dmp').read()    
-    
-def t(req):
-    yield open(rootdir+'t.txt').read()        
-    
-def status(req):
-    yield """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head><title>Status</title></head>
-<body>"""
-    #yield "</body></html>"
-    os.chdir('/var/www/misolrna.org/htdocs/')
-    in4m = cPickle.load(open('in4m75plus.dmp'))
-    ref = cPickle.load(open('ref.dmp'))
-    I = len(in4m)
-    R = len(ref)
-    # get values in windows (tail).
-    cmd = ['tail', mirandaoutfile]
-    msize = os.path.getsize(mirandaoutfile)
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-    std = p.communicate()[0]
-    for line in str(std).split('\n'):
-        if line.startswith('>'):
-            i = line.replace('>','').split('\t')[0]
-            r = line.replace('>','').split('\t')[1]
-            break
-    iN = in4m.index(i)+1
-    rN = ref.index(r)+1
-    porc = ((float(((iN-1)*R)+rN))/(I*R))*100
-    resto = 100-porc
-    # checo status:
-    cmd = ['ps', 'ax']
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-    std = p.communicate()[0]
-    yield '<h2>Miranda Status</h2>\n'
-    if 'miranda' in str(std):
-        yield "RUNNING</br>"
-    else:
-        yield "STOPPED</br>"
-    yield '<h2>Completion</h2>\n'
-    yield '<img src="http://chart.apis.google.com/chart?chs=500x200&chd=t:%s,%s&cht=p3&chl=Done|Remaining"'%(porc,resto)
-    
-    yield "<br>Percent done: %.5f%% <br>"%porc
-    yield "<br>Output file size: %s Mb</body></html>"%(msize/1000000.0)
-    
+'''        
 
 def carga_pubs(mirna):
     ''' trae data de pubicaciones '''
-    conn = DBInterac(dbname)
+    conn = DBInterac(DB_NAME)
     pubsid = conn.pubids(mirna)
     publicaciones = []
     for pubid in pubsid:
@@ -197,7 +114,7 @@ def align_var(s,u,v,ancho):
     
 def metayqtl(bin_):
     ''' busco metabolitos y QTL desde bin'''
-    conn = DBInterac(dbname)
+    conn = DBInterac(DB_NAME)
     if '-' in bin_:
         # busco de a 1
         bin1 = bin_.split('-')[0]
@@ -240,7 +157,7 @@ def metayqtl(bin_):
     conn.close()
     return f_marker  
     
-def precublast(r_name,mirna,r_ini,numero,dbname=dbname):
+def precublast(r_name,mirna,r_ini,numero,dbname=DB_NAME):
     # OJO: MIRAR ESTA CONEXION, SACARLA?
     conn = DBInterac(dbname)
     if numero!=0:
@@ -251,7 +168,7 @@ def precublast(r_name,mirna,r_ini,numero,dbname=dbname):
     return c
 
 def readmiranda(mirna):
-    conn = DBInterac(dbname)
+    conn = DBInterac(DB_NAME)
     out = conn.r_miranda(mirna)
     conn.close()
     return out
@@ -285,8 +202,8 @@ def microResult(req):
              'metab':metab, 'C_hitDef':C_hitDef, 'C_alig':C_alig,
              'C_exp':C_exp, 'fromto':fromto, 'C_xls':C_xls}
     tpl_d['miranda_ss'] = readmiranda(mirna)
-    tpl_d['expression_s'] = expression_s
-    conn = DBInterac(dbname)
+    tpl_d['expression_s'] = EXPRESSION_S
+    conn = DBInterac(DB_NAME)
     seq_ori = conn.seq_from_mirnas(mirna)
     seq_br = '<br>'.join(chunker(seq_ori))
     tpl_d['seq'] = seq_br 
@@ -302,7 +219,7 @@ def microResult(req):
         r_ini = miranda_row[5]
         #mirna
         parID = miranda_row[0]
-        tmp = precublast(r_name,mirna,r_ini,numero,dbname)
+        tmp = precublast(r_name,mirna,r_ini,numero,DB_NAME)
         # desenrrolar tmp, poner fn d alineamiento y volver a enrollar.
         new_tmp = []
         for sub_tmp in tmp:
@@ -351,8 +268,8 @@ def targetResult(req):
              'metab':metab, 'C_hitDef':C_hitDef, 'C_alig':C_alig,
              'C_exp':C_exp, 'fromto':fromto, 'C_xls':C_xls}
     #tpl_d['miranda_ss'] = readmiranda(mirna)
-    tpl_d['expression_s'] = expression_s
-    conn = DBInterac(dbname)
+    tpl_d['expression_s'] = EXPRESSION_S
+    conn = DBInterac(DB_NAME)
     #seq_ori = conn.seq_from_mirnas(mirna)
     tpl_d['miranda_ss'] = conn.miranda_rname(target)
     queryname = {}
@@ -411,8 +328,6 @@ def targetResult(req):
     dataout = it(searchList=[tpl_d])
     conn.close()
     return str(dataout)
-
-# root@ubuntu:/var/www/sebastianbassi.com/htdocs# cp index_template.py /usr/lib/python2.5/site-packages/
 
 def blastresult_ax(req):
     #from Cheetah.Template import Template
@@ -550,8 +465,8 @@ def binResult(req):
              'metab':metab, 'C_hitDef':C_hitDef,
              'C_alig':C_alig, 'C_exp':C_exp,
              'fromto':fromto, 'C_xls':C_xls}
-    tpl_d['expression_s'] = expression_s
-    conn = DBInterac(dbname)
+    tpl_d['expression_s'] = EXPRESSION_S
+    conn = DBInterac(DB_NAME)
     tpl_d['miranda_ss'] = conn.bin1(bin_)
     queryname = {}
     for rec in tpl_d['miranda_ss']:
@@ -572,9 +487,6 @@ def binResult(req):
             break
         if new_tmp:
             queryname[parID] = new_tmp
-        #if tmp:
-        #    queryname[parID] = tmp
-        #markers2[r_name] = metayqtl(bin_)
     tpl_d['queryname'] = queryname
     tpl_d['markers2'] = metayqtl(bin_)
     dataout = it(searchList=[tpl_d])
@@ -608,8 +520,8 @@ def keywordResult(req):
              'fromto':fromto,'metab':metab,'C_hitDef':C_hitDef,
              'C_alig':C_alig, 'C_exp':C_exp}
              
-    tpl_d['expression_s'] = expression_s
-    conn = DBInterac(dbname)
+    tpl_d['expression_s'] = EXPRESSION_S
+    conn = DBInterac(DB_NAME)
     allbins = set()
     # checo q campos hay que buscar:
     if qtl_s:
@@ -624,7 +536,7 @@ def keywordResult(req):
             allbins |= set([x[0] for x in bins2])
     # con todos estos bines, buscar todos los parID!
     # tabla tmp
-    conn_tt = TempTables(dbname)
+    conn_tt = TempTables(DB_NAME)
     c = conn_tt.get_parIDs(allbins)
     allparid_set = set([x[0] for x in c])
     tpl_d['miranda_ss'] = conn_tt.all_miranda_parID()
@@ -642,7 +554,7 @@ def keywordResult(req):
     markers2 = {}
     for rec in tpl_d['miranda_ss']:
         mirna = rec[1]
-        conn = DBInterac(dbname)
+        conn = DBInterac(DB_NAME)
         numero = conn.count_align(mirna)
         tpl_d['numero'] = numero    
         r_name = rec[2]
@@ -660,7 +572,7 @@ def keywordResult(req):
             break
         if new_tmp:
             queryname[parID] = new_tmp
-        conn = DBInterac(dbname)
+        conn = DBInterac(DB_NAME)
         tmp = conn.bin_from_parid(parID)
         conn.close()
         if tmp:
@@ -676,13 +588,6 @@ def keywordResult(req):
 '''    
 s = Selector(wrap=Yaro)
 #s.add('/', GET=index)
-s.add('/status', GET=status)
-s.add('/in4m.dmp', GET=in4m)
-s.add('/t.txt', GET=t)
-
-s.add('/part1.fasta', GET=part1)
-s.add('/part2.fasta', GET=part2)
-s.add('/part3.fasta', GET=part3)
 
 s.add('/about', GET=about)
 s.add('/keywordResult', POST=keywordResult)

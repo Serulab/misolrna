@@ -1,4 +1,11 @@
-
+import os
 from common import *
 
-static_root = '/Users/sbassi/projects/serulab/misolrna/static/'
+STATIC_ROOT = '/Users/sbassi/projects/serulab/misolrna/static/'
+
+BASE_URL = 'misolrna.org'
+
+ROOT_DIR = '/Users/sbassi/projects/serulab/misolrna/'
+DB_NAME = os.path.join(ROOT_DIR,'mirna20.db')
+
+staticFS = '/var/www/%s/htdocs/img/static/'%BASE_URL
