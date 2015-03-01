@@ -3,11 +3,15 @@
 # LICENSE: AGPL 3.0. Sebastian Bassi
 
 from tempfile import mkstemp
-from bottle import SimpleTemplate
-from bottle import route, run, view, static_file
+#from bottle import SimpleTemplate
+from bottle import route, run, static_file
+
+from bottle import cheetah_view as view
+
+import os
 
 import sys
-sys.path.append("/var/www/misolrna.org/htdocs")
+sys.path.append(os.path.realpath(__file__))
 from dbconn import TempTables, DBInterac
 from cStringIO import StringIO
 from Bio.Blast.Applications import NcbiblastnCommandline as blastcli
@@ -15,8 +19,6 @@ from Bio.Blast import NCBIXML
 
 #from Cheetah.Template import Template
 
-import os
-import sys
 import cPickle
 import subprocess
 import argparse
@@ -39,10 +41,19 @@ STATIC_ROOT = settings.STATIC_ROOT
 EXPRESSION_S = settings.EXPRESSION_S
 
 @route('/')
-@view('index.tmp')
+@view('index')
 def index():
     #dataout = it(searchList=[{'page_type': 'home', 'page_title' : 'MiSolRNAdb Home page'}])
     return {}
+
+@route('/search')
+@view('search.tmp')
+def search(req):
+    dataout = it(searchList=[{'page_type': 'search', 
+                              'page_title' : 'Search miRNA'}])
+    return str(dataout)
+
+
 
 @route('/static/css/<filename>')
 def css_static(filename):
@@ -55,10 +66,6 @@ def fonts_static(filename):
 @route('/static/js/<filename>')
 def js_static(filename):
     return static_file(filename, root='%sjs/'%STATIC_ROOT)  
-
-def search(req):
-    dataout = it(searchList=[{'page_type': 'search', 'page_title' : 'Search miRNA'}])
-    return str(dataout)
     
 def help(req):
     dataout = it(searchList=[{'page_type': 'help', 'page_title' : 'Help page'}])
@@ -587,14 +594,11 @@ def keywordResult(req):
     
 '''    
 s = Selector(wrap=Yaro)
-#s.add('/', GET=index)
-
 s.add('/about', GET=about)
 s.add('/keywordResult', POST=keywordResult)
 s.add('/targetResult', POST=targetResult)
 s.add('/targetResult/{name}.{dot}', GET=targetResult)
 s.add('/targetResult/{name}', GET=targetResult)
-s.add('/search', GET=search)
 s.add('/help', GET=help)
 s.add('/blast', GET=blast)
 s.add('/blastresult', POST=blastresult)
@@ -603,9 +607,6 @@ s.add('/binResult', POST=binResult)
 s.add('/binResult/{bin}', GET=binResult)
 s.add('/microResult', POST=microResult)
 s.add('/microResult/{mirna}', GET=microResult)
-
-
-application = s
 '''
 run(host='localhost', port=8080)
 

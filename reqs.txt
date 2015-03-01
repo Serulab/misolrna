@@ -5,3 +5,4 @@ bottle==0.12.8
 distribute==0.6.24
 resolver==0.2.1
 wsgiref==0.1.2
+Cheetah==2.4.4
