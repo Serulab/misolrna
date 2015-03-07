@@ -13,6 +13,7 @@ import os
 import sys
 sys.path.append(os.path.realpath(__file__))
 from dbconn import TempTables, DBInterac
+from index_template import index_template as it
 from cStringIO import StringIO
 from Bio.Blast.Applications import NcbiblastnCommandline as blastcli
 from Bio.Blast import NCBIXML
@@ -27,7 +28,8 @@ import argparse
 sys.path.append('settings')
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-s','--settings', help='setting file',required=True)
+parser.add_argument('-s', '--settings', help='setting file',
+                    required=True)
 args = parser.parse_args()
 settings = __import__(args.settings)
 
@@ -35,6 +37,7 @@ BASE_URL = settings.BASE_URL
 ROOT_DIR = settings.ROOT_DIR
 DB_NAME = settings.DB_NAME
 STATIC_ROOT = settings.STATIC_ROOT
+STATIC_URL = settings.STATIC_URL
 
 #os.chdir(rootdir)
 
@@ -43,15 +46,12 @@ EXPRESSION_S = settings.EXPRESSION_S
 @route('/')
 @view('index')
 def index():
-    #dataout = it(searchList=[{'page_type': 'home', 'page_title' : 'MiSolRNAdb Home page'}])
     return {}
 
 @route('/search')
-@view('search.tmp')
-def search(req):
-    dataout = it(searchList=[{'page_type': 'search', 
-                              'page_title' : 'Search miRNA'}])
-    return str(dataout)
+@view('search')
+def search():
+    return {'STATIC_URL':STATIC_URL, 'page_title' : 'Search miRNA'}
 
 
 
@@ -67,15 +67,15 @@ def fonts_static(filename):
 def js_static(filename):
     return static_file(filename, root='%sjs/'%STATIC_ROOT)  
     
-def help(req):
+def help():
     dataout = it(searchList=[{'page_type': 'help', 'page_title' : 'Help page'}])
     return str(dataout)
 
-def blast(req):
+def blast():
     dataout = it(searchList=[{'page_type': 'blast', 'page_title' : 'BLAST'}])
     return str(dataout)
 
-def about(req):
+def about():
     dataout = it(searchList=[{'page_type': 'about', 'page_title' : 'About Us'}])
     return str(dataout)
 
