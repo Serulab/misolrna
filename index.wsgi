@@ -45,7 +45,8 @@ EXPRESSION_S = settings.EXPRESSION_S
 @route('/')
 @view('index')
 def index():
-    return {'type':'index'}
+    return {'type':'index',
+            'STATIC_URL':STATIC_URL,}
 
 @route('/search')
 @view('search')
@@ -54,6 +55,32 @@ def search():
             'type' : 'search',
             'title' : 'Search miRNA'}
 
+@route('/blast')
+@view('blast')
+def blast():
+    #dataout = it(searchList=[{'page_type': 'blast', 'page_title' : 'BLAST'}])
+    #return str(dataout)
+    return {'STATIC_URL':STATIC_URL, 
+            'type' : 'blast',
+            'title' : 'BLAST'}
+
+@route('/help')
+@view('help')    
+def help():
+    #dataout = it(searchList=[{'page_type': 'help', 'page_title' : 'Help page'}])
+    return {'STATIC_URL':STATIC_URL, 
+            'type' : 'help',
+            'title' : 'Help'}
+
+
+@route('/about')
+@view('about')
+def about():
+    #dataout = it(searchList=[{'page_type': 'about', 'page_title' : 'About Us'}])
+    #return str(dataout)
+    return {'STATIC_URL':STATIC_URL, 
+            'type' : 'about',
+            'title' : 'About'}
 
 
 @route('/static/css/<filename>')
@@ -68,17 +95,7 @@ def fonts_static(filename):
 def js_static(filename):
     return static_file(filename, root='%sjs/'%STATIC_ROOT)  
     
-def help():
-    dataout = it(searchList=[{'page_type': 'help', 'page_title' : 'Help page'}])
-    return str(dataout)
 
-def blast():
-    dataout = it(searchList=[{'page_type': 'blast', 'page_title' : 'BLAST'}])
-    return str(dataout)
-
-def about():
-    dataout = it(searchList=[{'page_type': 'about', 'page_title' : 'About Us'}])
-    return str(dataout)
 
 '''
 def toolt(req):

@@ -1,3 +1,4 @@
+#encoding UTF-8 
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -33,10 +34,20 @@
 <script type="text/javascript" src="http://yui.yahooapis.com/2.8.1/build/datasource/datasource-min.js"></script> 
 <script type="text/javascript" src="http://yui.yahooapis.com/2.8.1/build/autocomplete/autocomplete-min.js"></script>
 
-
+#if $type=='search'
+<script type="text/javascript" src="/${STATIC_URL}/js/toolt.js"></script>
+<link rel="stylesheet" type="text/css" href="/${STATIC_URL}/css/autocomp.css" />
+#end if
 
   </head>
-  <body>
+
+
+#if $type == 'search'
+<body class="yui-skin-sam" onload="ocultartodos();">
+#else
+<body>
+#end if
+
 
 <div class="container theme-showcase" role="main">
 

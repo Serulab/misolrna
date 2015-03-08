@@ -20,6 +20,5 @@ We will also very much appreciate your feedback comments and suggestions.</p>
 
 </div>
 
-</div>
 
 #include 'views/common_footer.tpl'
