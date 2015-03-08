@@ -3,7 +3,6 @@
 # LICENSE: AGPL 3.0. Sebastian Bassi
 
 from tempfile import mkstemp
-#from bottle import SimpleTemplate
 from bottle import route, run, static_file
 
 from bottle import cheetah_view as view
@@ -46,12 +45,14 @@ EXPRESSION_S = settings.EXPRESSION_S
 @route('/')
 @view('index')
 def index():
-    return {}
+    return {'type':'index'}
 
 @route('/search')
 @view('search')
 def search():
-    return {'STATIC_URL':STATIC_URL, 'page_title' : 'Search miRNA'}
+    return {'STATIC_URL':STATIC_URL, 
+            'type' : 'search',
+            'title' : 'Search miRNA'}
 
 
 

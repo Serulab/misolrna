@@ -45,9 +45,9 @@
 
 
 	<ul class="nav nav-tabs" role="tablist">
-        	<li class="active" role="presentation"><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-        	<li role="presentation"><a href="search"><span class="glyphicon glyphicon-search"></span> Search</a></li>
-        	<li role="presentation"><a href="blast"><span class="glyphicon glyphicon-certificate"></span> BLAST</a></li>
-        	<li role="presentation"><a href="help"><span class="glyphicon glyphicon-question-sign"></span> Help</a></li>
-        	<li role="presentation"><a href="about"><span class="glyphicon glyphicon-paperclip"></span> About us</a></li>
+        	<li class="#if $type=='index' then 'active' else ''#" role="presentation"><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+        	<li class="#if $type=='search' then 'active' else ''#" role="presentation"><a href="search"><span class="glyphicon glyphicon-search"></span> Search</a></li>
+        	<li class="#if $type=='blast' then 'active' else ''#" role="presentation"><a href="blast"><span class="glyphicon glyphicon-certificate"></span> BLAST</a></li>
+        	<li class="#if $type=='help' then 'active' else ''#" role="presentation"><a href="help"><span class="glyphicon glyphicon-question-sign"></span> Help</a></li>
+        	<li class="#if $type=='about' then 'active' else ''#" role="presentation"><a href="about"><span class="glyphicon glyphicon-paperclip"></span> About us</a></li>
 	</ul>
