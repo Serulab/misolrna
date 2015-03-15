@@ -3,7 +3,7 @@
 # LICENSE: AGPL 3.0. Sebastian Bassi
 
 from tempfile import mkstemp
-from bottle import route, run, static_file
+from bottle import route, run, static_file, post
 
 from bottle import cheetah_view as view
 
@@ -467,7 +467,9 @@ def blastresult(req):
     dataout = it(searchList=[d])
     return str(dataout)
 
-def binResult(req):
+@post('/binResult')
+@view('binresult')
+def binResult():
     if req.environ['selector.vars'] == {}:
         bin_ = req.form.get('bin', '').replace('|','')
         fromto = req.form.get("fromto","").replace('|','')

@@ -37,6 +37,7 @@
 #if $type=='search'
 <script type="text/javascript" src="/${STATIC_URL}/js/toolt.js"></script>
 <link rel="stylesheet" type="text/css" href="/${STATIC_URL}/css/autocomp.css" />
+<link rel="stylesheet" type="text/css" href="/${STATIC_URL}/css/searchcustom.css" />
 #end if
 
   </head>
