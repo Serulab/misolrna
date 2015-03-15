@@ -32,14 +32,14 @@
 #set $target = $m[2]
 <table border=1 width="80%">
 
-<tr><th>Micro name</th><td><a href="$url/microResult/$m[1]">$m[1]</a></td></tr>
-<tr><th>Target name</th><td><a href="$url/targetResult/$m[2]">$m[2]</a></td></tr>
+<tr><th>Micro name</th><td><a href="/microResult/$m[1]">$m[1]</a></td></tr>
+<tr><th>Target name</th><td><a href="/targetResult/$m[2]">$m[2]</a></td></tr>
 <tr><th>Micro position</th><td>$m[3] to $m[4]</td></tr>
 #if $fromto:
 <tr><th>Target position</th><td>$m[5] to $m[6]</td></tr>
 #end if
 #if $C_alig:
-<tr><th>Alignment</th><td><img src="$imgurl/aligns/align-${m[0]}.png" width=500 height=80 alt="alignment" /></td></tr>
+<tr><th>Alignment</th><td><img src="/static/imgs/aligns/align-${m[0]}.png" width=500 height=80 alt="alignment" /></td></tr>
 #end if
 <tr><th colspan="2">Gene annotation</th></tr>
 <tr><th>Augustus gene prediction</th>
@@ -109,7 +109,7 @@ N/A
 #if $C_exp:
 #set $expname = $m[2] + '.png'
 #if $expname in $expression_s:
-<tr><td>Expression</td><td><img src="$imgurl/exp/${expname}" alt="expression data" /></td></tr>
+<tr><td>Expression</td><td><img src="/static/imgs/exp/${expname}" alt="expression data" /></td></tr>
 #end if
 #end if
 
@@ -121,7 +121,7 @@ N/A
 <hr />
 
 #if $C_xls:
-Excel dump: <a href="$fixurl/xls/tmpbins/${bin}.xls">$bin</a>
+Excel dump: <a href="/static/xls/tmpbins/${bin}.xls">$bin</a>
 #end if
 
 

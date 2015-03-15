@@ -3,7 +3,7 @@
 # LICENSE: AGPL 3.0. Sebastian Bassi
 
 from tempfile import mkstemp
-from bottle import route, run, static_file, post
+from bottle import route, run, static_file, get, post, request
 
 from bottle import cheetah_view as view
 
@@ -48,7 +48,7 @@ def index():
     return {'type':'index',
             'STATIC_URL':STATIC_URL,}
 
-@route('/search')
+@get('/search')
 @view('search')
 def search():
     return {'STATIC_URL':STATIC_URL, 
@@ -76,8 +76,6 @@ def help():
 @route('/about')
 @view('about')
 def about():
-    #dataout = it(searchList=[{'page_type': 'about', 'page_title' : 'About Us'}])
-    #return str(dataout)
     return {'STATIC_URL':STATIC_URL, 
             'type' : 'about',
             'title' : 'About'}
@@ -95,6 +93,17 @@ def fonts_static(filename):
 def js_static(filename):
     return static_file(filename, root='%sjs/'%STATIC_ROOT)  
     
+@get('/static/imgs/aligns/<filename:re:.*\.png>')
+def images(filename):
+    return static_file(filename, root='static/imgs/aligns/')
+
+@get('/static/imgs/exp/<filename:re:.*\.(jpg|png|gif)>')
+def images(filename):
+    return static_file(filename, root='static/img/exp')
+
+@get('/static/xls/<filename:re:.*\.(xls)>')
+def images(filename):
+    return static_file(filename, root='static/xls/')    
 
 
 '''
@@ -467,25 +476,30 @@ def blastresult(req):
     dataout = it(searchList=[d])
     return str(dataout)
 
+# FOR GET BINRESULT:
+"""
+    fromto = 'on'
+    metab = 'on'
+    C_hitDef = 'on'
+    C_alig = 'on'
+    C_exp = 'on'
+    C_xls = 'on'
+
+"""
+
+
 @post('/binResult')
 @view('binresult')
 def binResult():
-    if req.environ['selector.vars'] == {}:
-        bin_ = req.form.get('bin', '').replace('|','')
-        fromto = req.form.get("fromto","").replace('|','')
-        metab = req.form.get("metab","").replace('|','')
-        C_hitDef = req.form.get('hitdef','').replace('|','')
-        C_alig = req.form.get('alig','').replace('|','')
-        C_exp = req.form.get('exp','').replace('|','')
-        C_xls = req.form.get('xls','').replace('|','')
-    else:
-        bin_ = req.environ['selector.vars']['bin'].replace('|','').replace(';','')
-        fromto = 'on'
-        metab = 'on'
-        C_hitDef = 'on'
-        C_alig = 'on'
-        C_exp = 'on'
-        C_xls = 'on'
+    #request.forms.get('username')
+
+    bin_ = request.forms.get('bin', '').replace('|','')
+    fromto = request.forms.get("fromto","").replace('|','')
+    metab = request.forms.get("metab","").replace('|','')
+    C_hitDef = request.forms.get('hitdef','').replace('|','')
+    C_alig = request.forms.get('alig','').replace('|','')
+    C_exp = request.forms.get('exp','').replace('|','')
+    C_xls = request.forms.get('xls','').replace('|','')
 
     tpl_d = {'page_type': 'binResult', 'bin':bin_, 
              'page_title' : 'Search by Bin, results',
@@ -516,9 +530,11 @@ def binResult():
             queryname[parID] = new_tmp
     tpl_d['queryname'] = queryname
     tpl_d['markers2'] = metayqtl(bin_)
-    dataout = it(searchList=[tpl_d])
+    tpl_d['STATIC_URL'] = STATIC_URL
+    tpl_d['type'] = 'search'
+    #dataout = it(searchList=[tpl_d])
     conn.close()
-    return str(dataout)
+    return tpl_d
         
 def keywordResult(req):
     if req.environ['selector.vars'] == {}:
