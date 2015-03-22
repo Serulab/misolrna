@@ -17,3 +17,45 @@ body {
   width: auto;
 }
 
+#MainBlastForm{
+display: none;
+}
+
+p.example 
+{ 
+ color: #CCC; 
+} 
+
+textarea#example {
+ color: #CCC; 
+ font-family: Tahoma, sans-serif;
+}
+
+
+p.note {
+	background: #EEE;
+	padding: 4px;
+	font-family: tahoma;
+	font-size: 85%;
+	line-height: 130%;
+	margin-top: 0;
+}
+
+p.dnaseq {
+	background: #EEE;
+	font-size: 100%;	
+	font-family: consola,monospace;
+    color: #F00;
+}
+
+b.dest {
+	background: #EEE;
+	font-size: 100%;	
+	color: #F00;
+	font-weight: bold;
+}
+
+result {
+font-size: 90%;
+color: #F00;
+}

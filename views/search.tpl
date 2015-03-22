@@ -38,10 +38,13 @@
 <div ID="searchmicro">
 <h2>Search by Micro</h2> 
 <p class="note">Select a micro from the drop-down menu.</p> 
-<form action="microResult" method="post"> 
-  Micro code: <select name="micro_val">
+<form action="microResult" method="post" class="form-inline"> 
+<div class="form-group">
+<label for="microsel"> Micro code 
+	<select id="microsel" name="micro_val" class="form-control">
 #include "views/microlist.tpl"
-</select> <br /> 
+</select></label>
+</div>
 #include "views/displayopts.tpl"
 
 <div ID="searchtarget">

@@ -97,9 +97,9 @@ def js_static(filename):
 def images(filename):
     return static_file(filename, root='static/imgs/aligns/')
 
-@get('/static/imgs/exp/<filename:re:.*\.(jpg|png|gif)>')
+@get('/static/imgs/exp/<filename:re:.*\.png>')
 def images(filename):
-    return static_file(filename, root='static/img/exp')
+    return static_file(filename, root='static/imgs/exp/')
 
 @get('/static/xls/<filename:re:.*\.(xls)>')
 def images(filename):
@@ -211,17 +211,19 @@ def chunker(xx,s=70):
    for i in range(0,len(xx),s):
        yield xx[i:i+s]
 
-
-def microResult(req):
+@post('/microResult')
+@view('microresult')
+def microResult():
     # buscar q_name en miranda
-    if req.environ['selector.vars'] == {}:
-        mirna = req.form.get('micro_val','DEFAULT')
-        metab = req.form.get("metab","").replace('|','')
-        fromto = req.form.get("fromto","").replace('|','')        
-        C_hitDef = req.form.get('hitdef','').replace('|','')
-        C_alig = req.form.get('alig','').replace('|','')
-        C_exp = req.form.get('exp','').replace('|','')
-        C_xls = req.form.get('xls','').replace('|','')
+
+    if 0 == 0:
+        mirna = request.forms.get('micro_val','DEFAULT')
+        metab = request.forms.get('metab','').replace('|','')
+        fromto = request.forms.get('fromto','').replace('|','')        
+        C_hitDef = request.forms.get('hitdef','').replace('|','')
+        C_alig = request.forms.get('alig','').replace('|','')
+        C_exp = request.forms.get('exp','').replace('|','')
+        C_xls = request.forms.get('xls','').replace('|','')
     else:
         mirna = req.environ['selector.vars']['mirna'].replace('|','').replace(';','')
         metab = 'on'
@@ -271,9 +273,11 @@ def microResult(req):
             markers2[r_name] = metayqtl(bin_)
     tpl_d['queryname'] = queryname
     tpl_d['markers2'] = markers2
-    dataout = it(searchList=[tpl_d])
+    tpl_d['STATIC_URL'] = STATIC_URL
+    tpl_d['type'] = 'microresult'
+
     conn.close()
-    return str(dataout)
+    return tpl_d
 
 def targetResult(req):
     if req.environ['selector.vars'] == {}:
@@ -435,8 +439,8 @@ BLAST 2.2.23 release (BMC Bioinformatics 2009, 10:421 doi:10.1186/1471-2105-10-4
     d['lblast'] = lblast
     cl = (' '.join(cli)).replace('/var/www/%s/htdocs/'%BASE_URL,'')
     d['cl'] = cl
-    ##dataout = Template(template_s, searchList=[d])
-    return str(dataout)
+    
+    return d
     
 
 def blastresult(req):
@@ -491,7 +495,6 @@ def blastresult(req):
 @post('/binResult')
 @view('binresult')
 def binResult():
-    #request.forms.get('username')
 
     bin_ = request.forms.get('bin', '').replace('|','')
     fromto = request.forms.get("fromto","").replace('|','')
@@ -531,8 +534,7 @@ def binResult():
     tpl_d['queryname'] = queryname
     tpl_d['markers2'] = metayqtl(bin_)
     tpl_d['STATIC_URL'] = STATIC_URL
-    tpl_d['type'] = 'search'
-    #dataout = it(searchList=[tpl_d])
+    tpl_d['type'] = 'searchbin'
     conn.close()
     return tpl_d
         
