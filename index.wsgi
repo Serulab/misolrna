@@ -212,11 +212,12 @@ def chunker(xx,s=70):
        yield xx[i:i+s]
 
 @post('/microResult')
+@get('/microResult/<micro_number>')
 @view('microresult')
-def microResult():
+def microResult(micro_number=''):
     # buscar q_name en miranda
 
-    if 0 == 0:
+    if not micro_number:
         mirna = request.forms.get('micro_val','DEFAULT')
         metab = request.forms.get('metab','').replace('|','')
         fromto = request.forms.get('fromto','').replace('|','')        
@@ -225,13 +226,8 @@ def microResult():
         C_exp = request.forms.get('exp','').replace('|','')
         C_xls = request.forms.get('xls','').replace('|','')
     else:
-        mirna = req.environ['selector.vars']['mirna'].replace('|','').replace(';','')
-        metab = 'on'
-        fromto = 'on'
-        C_hitDef = 'on'
-        C_alig = 'on'
-        C_exp = 'on'
-        C_xls = 'on'
+        mirna = micro_number.replace('|','').replace(';','')
+        metab = fromto = C_hitDef = C_alig = C_exp = C_xls = 'on'
     
     tpl_d = {'page_type': 'microResult', 'mirna':mirna, 
              'page_title' : 'Search by micro, results',
@@ -493,16 +489,21 @@ def blastresult(req):
 
 
 @post('/binResult')
+@get('/binResult/<bin_number>')
 @view('binresult')
-def binResult():
+def binResult(bin_number=''):
 
-    bin_ = request.forms.get('bin', '').replace('|','')
-    fromto = request.forms.get("fromto","").replace('|','')
-    metab = request.forms.get("metab","").replace('|','')
-    C_hitDef = request.forms.get('hitdef','').replace('|','')
-    C_alig = request.forms.get('alig','').replace('|','')
-    C_exp = request.forms.get('exp','').replace('|','')
-    C_xls = request.forms.get('xls','').replace('|','')
+    if bin_number:
+        bin_ = bin_number
+        qtl_s = meta_s = hitdef_s = fromto = metab = C_hitDef = C_alig = C_exp = C_xls = 'on'
+    else:
+        bin_ = request.forms.get('bin', '').replace('|','')
+        fromto = request.forms.get("fromto","").replace('|','')
+        metab = request.forms.get("metab","").replace('|','')
+        C_hitDef = request.forms.get('hitdef','').replace('|','')
+        C_alig = request.forms.get('alig','').replace('|','')
+        C_exp = request.forms.get('exp','').replace('|','')
+        C_xls = request.forms.get('xls','').replace('|','')
 
     tpl_d = {'page_type': 'binResult', 'bin':bin_, 
              'page_title' : 'Search by Bin, results',
