@@ -1,4 +1,6 @@
-Display:<br />   
+
+<label for="displaynoxml">Display:</label>
+<div id="displaynoxml">
 <input name="metab" type="checkbox" checked /> 
 <a href="#" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'metabolite QTL (QML) defined by <a href=\\'http://www.nature.com/nbt/journal/v24/n4/abs/nbt1192.html\\'>Schauer et al (2006)</a> by using <a href=\\'http://www.sgn.cornell.edu/cview/map.pl?map_id=il6&show_offsets=1&show_ruler=1\\'>S. pennellii introgression lines population</a>');return false">QTL</a><br /> 
 <input name="fromto" type="checkbox" checked /> 
@@ -9,7 +11,9 @@ Display:<br />
 <a href="#" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'Alignment between the mature miRNA and the recognized sequence of the putative target gene.');return false">Alignment</a><br /> 
 <input name="exp" type="checkbox" checked /> 
 <a href="#" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'Microarray data in tomato fruit development');return false">Target expression profile</a><br />
- <input type="reset"  /> 
- <input type="submit" />
+</div>
+<p></p>
+<button type="submit" class="btn btn-default">Search</button>
+
  </form> 
 </div>

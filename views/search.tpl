@@ -23,7 +23,7 @@
 
 <div ID="searchbin">
 <h2>Search by Bin</h2> 
-<p class="note">Select a bin from the drop-down menu.</p> 
+<p class="bg-info">Select a bin from the drop-down menu.</p> 
 <form action="binResult" method="post" class="form-inline"> 
 <div class="form-group">
 
@@ -37,7 +37,7 @@
 
 <div ID="searchmicro">
 <h2>Search by Micro</h2> 
-<p class="note">Select a micro from the drop-down menu.</p> 
+<p class="bg-info">Select a micro from the drop-down menu.</p> 
 <form action="microResult" method="post" class="form-inline"> 
 <div class="form-group">
 <label for="microsel"> Micro code 
@@ -49,7 +49,7 @@
 
 <div ID="searchtarget">
 <h2>Search by Target</h2> 
-<p class="note">Enter a target name like "SGN-U566117", "C02SLe0022J22.1" (without  quotes).</p> 
+<p class="bg-info">Enter a target name like "SGN-U566117", "C02SLe0022J22.1" (without  quotes).</p> 
 <form action="targetResult" method="post">
 
 <label for="myInput">Target name:</label> 
@@ -64,15 +64,16 @@
 
 <div ID="searchkey">
 <h2>Search by Keyword</h2> 
-<p class="note">Enter a keyword like "copper", "resistance" (without  quotes).</p> 
+<p class="bg-info">Enter a keyword like "copper", "resistance" (without  quotes).</p> 
   <form action="keywordResult" method="post"> 
-  Keyword to search : <input name="searchkey" type="text" value="" size=30 /> 
+  <label for="skey">Keyword to search :</label> <input name="searchkey" type="text" value="" size=30 id="skey" /> 
 <br/>
-Fields to search:<br /> 
-  <input name="qtl_s" type="checkbox" checked /> 
-    QTL <input name="meta_s" type="checkbox" checked /> Metabolites <input name="hitdef_s" type="checkbox" checked /> 
-    Hit Definition<br /> 
-<br /> 
+<label for="qtl">Fields to search:</label>
+  <div id="qtl">
+  <input name="qtl_s" type="checkbox" checked > 
+    QTL <input name="meta_s" type="checkbox" checked > Metabolites <input name="hitdef_s" type="checkbox" checked /> 
+    Hit Definition</div> 
+<br> 
 #include "views/displayoptsnoxml.tpl"
 
 </div>

@@ -275,28 +275,26 @@ def microResult(micro_number=''):
     conn.close()
     return tpl_d
 
-def targetResult(req):
-    if req.environ['selector.vars'] == {}:
-        fromto = req.form.get("fromto","").replace('|','')
-        target = req.form.get('target_val','DEFAULT').replace('|','')
-        metab = req.form.get("metab","").replace('|','')
-        C_hitDef = req.form.get('hitdef','').replace('|','')
-        C_alig = req.form.get('alig','').replace('|','')
-        C_exp = req.form.get('exp','').replace('|','')
-        C_xls = req.form.get('xls','').replace('|','')
+@post('/targetResult')
+@get('/targetResult/<target>')
+@view('targetresult')
+def targetResult(target=''):
+    if not target:
+        fromto = request.forms.get("fromto","").replace('|','')
+        target = request.forms.get('target_val','DEFAULT').replace('|','')
+        metab = request.forms.get("metab","").replace('|','')
+        C_hitDef = request.forms.get('hitdef','').replace('|','')
+        C_alig = request.forms.get('alig','').replace('|','')
+        C_exp = request.forms.get('exp','').replace('|','')
+        C_xls = request.forms.get('xls','').replace('|','')
     else:
-        target = req.environ['selector.vars']['name'].replace('|','').replace(';','')
-        try:
-            dot = req.environ['selector.vars']['dot']
-            target += '.'+dot
-        except KeyError:
-            pass
-        fromto = 'on'
-        metab = 'on'
-        C_hitDef = 'on'
-        C_alig = 'on'
-        C_exp = 'on'
-        C_xls = 'on'
+        target = target.replace('|','').replace(';','')
+        #try:
+        #    dot = req.environ['selector.vars']['dot']
+        #    target += '.'+dot
+        #except KeyError:
+        #    pass
+        fromto = metab = C_hitDef = C_alig = C_exp = C_xls = 'on'
     tpl_d = {'page_type': 'targetResult', 'target':target, 
              'page_title' : 'Search by target, results',
              'metab':metab, 'C_hitDef':C_hitDef, 'C_alig':C_alig,
@@ -310,10 +308,7 @@ def targetResult(req):
     parID = conn.parID_from_target(target)
     if parID:
         bin_ = conn.bin_from_parid(parID[0])
-        if bin_:
-            markers2 = metayqtl(bin_[0])
-        else:
-            markers2 = ''
+        markers2 = metayqtl(bin_[0]) if bin_ else ''
     else:
         markers2 = ''
     tpl_d['markers2'] = markers2
@@ -359,9 +354,9 @@ def targetResult(req):
             if tmp_mark:
                 markers.add((markid[0],tmp_mark[0],tmp_mark[1],tmp_mark[2]))
     tpl_d['markers'] = markers
-    dataout = it(searchList=[tpl_d])
+    tpl_d['STATIC_URL'] = STATIC_URL
     conn.close()
-    return str(dataout)
+    return tpl_d
 
 def blastresult_ax(req):
     #from Cheetah.Template import Template
@@ -539,27 +534,19 @@ def binResult(bin_number=''):
     conn.close()
     return tpl_d
         
-def keywordResult(req):
-    if req.environ['selector.vars'] == {}:
-        keywords = req.form.get('searchkey', '').replace('|','')
-        qtl_s = req.form.get('qtl_s', '').replace('|','')
-        meta_s = req.form.get('meta_s', '').replace('|','')
-        hitdef_s = req.form.get('hitdef_s', '').replace('|','')
-        fromto = req.form.get("fromto","").replace('|','')
-        metab = req.form.get("metab","").replace('|','')
-        C_hitDef = req.form.get('hitdef','').replace('|','')
-        C_alig = req.form.get('alig','').replace('|','')
-        C_exp = req.form.get('exp','').replace('|','')
-    else:
-        keywords = 'low'
-        qtl_s = 'on'
-        meta_s = 'on'
-        hitdef_s = 'on'
-        fromto = 'on'
-        metab = 'on'
-        C_hitDef = 'on'
-        C_alig = 'on'
-        C_exp = 'on'
+
+@post('/keywordResult')
+@view('keywordresult')
+def keywordResult():
+    keywords = request.forms.get('searchkey', '').replace('|','')
+    qtl_s = request.forms.get('qtl_s', '').replace('|','')
+    meta_s = request.forms.get('meta_s', '').replace('|','')
+    hitdef_s = request.forms.get('hitdef_s', '').replace('|','')
+    fromto = request.forms.get("fromto","").replace('|','')
+    metab = request.forms.get("metab","").replace('|','')
+    C_hitDef = request.forms.get('hitdef','').replace('|','')
+    C_alig = request.forms.get('alig','').replace('|','')
+    C_exp = request.forms.get('exp','').replace('|','')
     
     tpl_d = {'page_type': 'keywordResult', 'keywords':keywords, 
              'page_title' : 'Search by Keywords, results',
@@ -626,10 +613,12 @@ def keywordResult(req):
             markers2[r_name] = metayqtl(bin_)
     tpl_d['queryname'] = queryname
     tpl_d['markers2'] = markers2
+    tpl_d['STATIC_URL'] = STATIC_URL
+    #XXXX
+
     
-    dataout = it(searchList=[tpl_d])
     conn.close()
-    return str(dataout)
+    return tpl_d
     
 '''    
 s = Selector(wrap=Yaro)
