@@ -17,9 +17,6 @@ body {
   width: auto;
 }
 
-#MainBlastForm{
-display: none;
-}
 
 p.example 
 { 
@@ -29,16 +26,6 @@ p.example
 textarea#example {
  color: #CCC; 
  font-family: Tahoma, sans-serif;
-}
-
-
-p.note {
-	background: #EEE;
-	padding: 4px;
-	font-family: tahoma;
-	font-size: 85%;
-	line-height: 130%;
-	margin-top: 0;
 }
 
 p.dnaseq {

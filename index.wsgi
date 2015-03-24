@@ -58,17 +58,14 @@ def search():
 @route('/blast')
 @view('blast')
 def blast():
-    #dataout = it(searchList=[{'page_type': 'blast', 'page_title' : 'BLAST'}])
-    #return str(dataout)
-    return {'STATIC_URL':STATIC_URL, 
+    return {'STATIC_URL' : STATIC_URL, 
             'type' : 'blast',
             'title' : 'BLAST'}
 
 @route('/help')
 @view('help')    
 def help():
-    #dataout = it(searchList=[{'page_type': 'help', 'page_title' : 'Help page'}])
-    return {'STATIC_URL':STATIC_URL, 
+    return {'STATIC_URL' : STATIC_URL, 
             'type' : 'help',
             'title' : 'Help'}
 
@@ -614,9 +611,6 @@ def keywordResult():
     tpl_d['queryname'] = queryname
     tpl_d['markers2'] = markers2
     tpl_d['STATIC_URL'] = STATIC_URL
-    #XXXX
-
-    
     conn.close()
     return tpl_d
     
