@@ -11,3 +11,9 @@ DB_NAME = os.path.join(ROOT_DIR,'mirna20.db')
 #STATIC_FS = '/var/www/%s/htdocs/img/static/'%BASE_URL
 
 STATIC_URL = 'static'
+
+# BLAST path
+BLASTN_EXE = '/usr/local/ncbi/blast/bin/blastn'
+
+# BLAST DBs path
+BLASTDB_PATH = '/Users/sbassi/projects/serulab/misolrna/blastdbs/'

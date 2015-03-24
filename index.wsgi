@@ -103,18 +103,7 @@ def images(filename):
     return static_file(filename, root='static/xls/')    
 
 
-'''
-def toolt(req):
-    return open(rootdir+'toolt.js').read()    
-        
-def basiccss(req):
-    return open(rootdir+'basic.css').read()
-
-def tabscss(req):
-    return open(rootdir+'tabs.css').read() 
-'''        
-
-def carga_pubs(mirna):
+def _carga_pubs(mirna):
     ''' trae data de pubicaciones '''
     conn = DBInterac(DB_NAME)
     pubsid = conn.pubids(mirna)
@@ -132,7 +121,7 @@ def carga_pubs(mirna):
     return publicaciones
     
     
-def align_var(s,u,v,ancho):
+def _align_var(s,u,v,ancho):
     ''' Hace alineamiento en HTML '''
     ancho = 60
     divs = len(s)/ancho + 1
@@ -190,6 +179,9 @@ def metayqtl(bin_):
     
 def precublast(r_name,mirna,r_ini,numero,dbname=DB_NAME):
     # OJO: MIRAR ESTA CONEXION, SACARLA?
+    '''
+    Document this
+    '''
     conn = DBInterac(dbname)
     if numero!=0:
         c = conn.datafrom_precu_blast_ali(r_name,mirna,r_ini)
@@ -205,8 +197,8 @@ def readmiranda(mirna):
     return out
 
 def chunker(xx,s=70):
-   for i in range(0,len(xx),s):
-       yield xx[i:i+s]
+    for i in range(0,len(xx),s):
+        yield xx[i:i+s]
 
 @post('/microResult')
 @get('/microResult/<micro_number>')
@@ -236,7 +228,7 @@ def microResult(micro_number=''):
     seq_ori = conn.seq_from_mirnas(mirna)
     seq_br = '<br>'.join(chunker(seq_ori))
     tpl_d['seq'] = seq_br 
-    tpl_d['pubs'] = carga_pubs(mirna)
+    tpl_d['pubs'] = _carga_pubs(mirna)
     # verifico si mirna esta en alignname de precu_blast para ver que 
     # busqueda hago.
     numero = conn.count_align(mirna)
@@ -253,7 +245,7 @@ def microResult(micro_number=''):
         new_tmp = []
         for sub_tmp in tmp:
             sub_tmp = list(sub_tmp)
-            sub_tmp[4] = align_var(sub_tmp[4],sub_tmp[6], sub_tmp[7],80)
+            sub_tmp[4] = _align_var(sub_tmp[4],sub_tmp[6], sub_tmp[7],80)
             new_tmp.append(sub_tmp)
             # para recorrer uno solo, Ariel lo pidio asi.
             break
@@ -321,7 +313,7 @@ def targetResult(target=''):
         new_tmp = []
         for sub_tmp in tmp:
             sub_tmp = list(sub_tmp)
-            sub_tmp[4] = align_var(sub_tmp[4],sub_tmp[6], sub_tmp[7],80)
+            sub_tmp[4] = _align_var(sub_tmp[4],sub_tmp[6], sub_tmp[7],80)
             new_tmp.append(sub_tmp)
             # para recorrerlo solo una vez porque Ariel quiere
             # que se vea un solo resultado.
@@ -355,67 +347,34 @@ def targetResult(target=''):
     conn.close()
     return tpl_d
 
-def blastresult_ax(req):
+@post('/blastresult_ax')
+@view('blastresult_ax')
+def blastresult_ax():
+    #my_env = os.environ
     #from Cheetah.Template import Template
+    #template_s = ''''''
     
-    template_s = '''<h2>Blast result</h2><p></p>
-#if $lblast:
-<table border="1">
-<tr><th>
-#if $db=='micro':
-Micro
-#elif $db=='target':
-Target
-#elif $db=='precus':
-Precursor
-#end if
-</th><th>E val</th><th>Score</th></tr>
-
-#for $bdata in $lblast:
-<tr><td>
-#if $db=='micro':
-<a href="/microResult/$bdata[0]">$bdata[0]</a></td><td>$bdata[1]</td><td>$bdata[2]
-#elif $db=='target':
-<a href="/targetResult/${bdata[0].split(' ')[0]}">${bdata[0].split(' ')[0]}</a></td><td>$bdata[1]</td><td>$bdata[2]
-#elif $db=='precus':
-<a href="/microResult/$bdata[0]">$bdata[0]</a></td><td>$bdata[1]</td><td>$bdata[2]
-#end if
-</td></tr>
-#end for
-</table>
-#else
-No results found
-#end if
-
-<p>Command line:</p> 
-$cl <br/>
-
-<p>Program used:</p>
-BLAST 2.2.23 release (BMC Bioinformatics 2009, 10:421 doi:10.1186/1471-2105-10-421)<br/>'''
-    
-    b_exe = '/var/www/%s/htdocs/ncbi-blast-2.2.23+/bin/blastn'%BASE_URL    
-    d = {'seq':req.form.get('SEQUENCE',''),
-         'eval':req.form.get('EXPECT','10'),
-         'db':req.form.get('DB','micro')}
+    #b_exe = '/var/www/%s/htdocs/ncbi-blast-2.2.23+/bin/blastn'%BASE_URL
+    b_exe = settings.BLASTN_EXE
+    d = {'seq':request.forms.get('SEQUENCE',''),
+         'eval':request.forms.get('EXPECT','10'),
+         'db':request.forms.get('DB','micro'),}
     #return ('<pre>'+str(d)+'</pre>')
-         
-    _ws = ''
-    if d['db']=='micro':
-        b_db = '/var/www/%s/htdocs/micros.fasta'%BASE_URL
-        _ws = 7
-    elif d['db']=='target':
-        b_db = '/var/www/%s/htdocs/target.fasta'%BASE_URL
-    else:
-        b_db = '/var/www/%s/htdocs/precus.fasta'%BASE_URL
-        _ws = 7
+
+    _ws = '' if d['db']=='target' else 7 
+    ### WARNING Micro y micros
+    b_db = os.path.join(settings.BLASTDB_PATH,'%s.fasta'%d['db'])
+
     # hago el CLI
     if _ws:
         cli = str(blastcli(cmd=b_exe,db=b_db,evalue=d['eval'],word_size=_ws,outfmt=5)).split(' ')
     else:
         cli = str(blastcli(cmd=b_exe,db=b_db,evalue=d['eval'],outfmt=5)).split(' ')
     print cli
-    open("/tmp/err.txt", "w").write(" ".join(cli)+"\n")
-    p = subprocess.Popen(cli, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    with open(settings.ERROR_LOG, "w") as fherror:
+         fherror.write(" ".join(cli)+"\n")
+    p = subprocess.Popen(cli, env=os.environ, stdin=subprocess.PIPE, 
+                         stdout=subprocess.PIPE)
     std = p.communicate(input=d['seq'])[0]
     lblast = []
     try:
@@ -425,7 +384,7 @@ BLAST 2.2.23 release (BMC Bioinformatics 2009, 10:421 doi:10.1186/1471-2105-10-4
     except:
         pass
     d['lblast'] = lblast
-    cl = (' '.join(cli)).replace('/var/www/%s/htdocs/'%BASE_URL,'')
+    cl = (' '.join(cli)).replace(settings.BLASTDB_PATH,'')
     d['cl'] = cl
     
     return d
@@ -517,7 +476,7 @@ def binResult(bin_number=''):
         new_tmp = []
         for sub_tmp in tmp:
             sub_tmp = list(sub_tmp)
-            sub_tmp[4] = align_var(sub_tmp[4],sub_tmp[6], sub_tmp[7],80)
+            sub_tmp[4] = _align_var(sub_tmp[4],sub_tmp[6], sub_tmp[7],80)
             new_tmp.append(sub_tmp)
             # para recorrerlo solo una vez porque Ariel quiere
             # que se vea un solo resultado.

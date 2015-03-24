@@ -53,7 +53,7 @@
 <form action="targetResult" method="post">
 
 <label for="myInput">Target name:</label> 
-<div id="myAutoComplete"> 
+<div id="myAutoComplete">
 	<input name="target_val" id="myInput" type="text"> 
 	<div id="myContainer"></div> 
 </div> 

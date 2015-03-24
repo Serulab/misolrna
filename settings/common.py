@@ -22,3 +22,5 @@ rootdir = '/var/www/%s/htdocs/'%BASE_URL
 imgdir = 'http://img.%s/'%BASE_URL
 imgdirFS = '/var/www/%s/htdocs/img/'%BASE_URL
 staticFS = '/var/www/%s/htdocs/img/static/'%BASE_URL
+
+ERROR_LOG = "/tmp/err.txt"

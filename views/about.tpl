@@ -36,10 +36,9 @@
 Both data and source code can be downloaded from <a href="https://github.com/Serulab/misolrna">Github project page</a>. The license of the software is <a href="http://www.gnu.org/licenses/agpl-3.0.html">GNU Affero General Public License</a> version 3.
 </p>
             
-            <p class="note">
-            Please cite: Ariel A Bazzini , Ramon Asis , Virginia Gonzalez , Sebastian Bassi , Mariana Conte , Marcelo Soria , Alisdair R Fernie , Sebastian Asurmendi and Fernando Carrari. "miSolRNA: A tomato micro RNA relational database.". 
-BMC Plant Biology 2010, 10:240doi:10.1186/1471-2229-10-240
-            </p>
+<p class="bg-info">
+Please cite: Ariel A Bazzini, Ramon Asis, Virginia Gonzalez, Sebastian Bassi, Mariana Conte, Marcelo Soria, Alisdair R Fernie, Sebastian Asurmendi and Fernando Carrari. "miSolRNA: A tomato micro RNA relational database.". BMC Plant Biology 2010, 10:240 <a href="http://www.biomedcentral.com/1471-2229/10/240">doi:10.1186/1471-2229-10-240</a>
+</p>
 
 </div>
 #include "views/common_footer.tpl"
