@@ -11,6 +11,37 @@
 #end if
 
 
+#if $type=='search'
+<script>
+
+\$( document ).ready(function() {
+
+  \$('#btnbin').on('click', function () {
+mostrarsolo1('searchbin');    
+  })
+
+  \$('#mirnacb').on('click', function () {
+mostrarsolo1('searchmicro');    
+  })
+
+  \$('#targetcb').on('click', function () {
+mostrarsolo1('searchtarget');    
+  })  
+
+  \$('#keywordcb').on('click', function () {
+mostrarsolo1('searchkey');    
+  })
+
+
+});
+
+
+
+</script>
+#end if
+
+
+
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));

@@ -5,21 +5,24 @@
 <h1>Select a search:</h1>
 <br />
 
-<div class="form-group">
-<input type="radio" rel="bin" name="mselector" value="bin" id="bincb" onclick="mostrarsolo1('searchbin');" /> <a href="#" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'Delimited chromosome fraction on the genetic map of the S. pennellii introgression lines population');return false" onclick="mostrarsolo1('searchbin');document.getElementById('bincb').checked = 'true';">Bin</a>
+
+
+<div class="btn-group" data-toggle="buttons">
+  <label class="btn btn-primary" id="btnbin" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'Delimited chromosome fraction on the genetic map of the S. pennellii introgression lines population');return false">
+    <input type="radio" name="options" id="option1bin" autocomplete="off"> Bin
+  </label>
+  <label class="btn btn-primary" id="mirnacb" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'Name of the plant microRNA');return false">
+    <input type="radio" name="options" id="option2mirna" autocomplete="off"> miRNA
+  </label>
+  <label class="btn btn-primary" id="targetcb" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'Putative target name; could be a Bacterial Artificial Chromosome (BAC) anchored to the tomato genome or an Unigene (<a href=\'http://www.sgn.cornell.edu\'>SGN</a>)');return false">
+    <input type="radio" name="options" id="option3target" autocomplete="off"> Target
+  </label>
+  <label class="btn btn-primary" id="keywordcb" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'Search by keyword in fields: QTL and/or Metabolites and/or Hit Definition.');return false">
+    <input type="radio" name="options" id="option4keyword" autocomplete="off"> Keyword
+  </label>
 </div>
 
-<div class="form-group">
-<input type="radio" rel="mirna" name="mselector" value="mirna" id="mirnacb" onclick="mostrarsolo1('searchmicro');" /> <a href="#" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'Name of the plant microRNA');return false" onclick="mostrarsolo1('searchmicro');document.getElementById('mirnacb').checked = 'true';">miRNA</a>
-</div>
 
-<div class="form-group">
-<input type="radio" rel="target" name="mselector" value="target" id="targetcb" onclick="mostrarsolo1('searchtarget');" /> <a href="#" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'Putative target name; could be a Bacterial Artificial Chromosome (BAC) anchored to the tomato genome or an Unigene (<a href=\'http://www.sgn.cornell.edu\'>SGN</a>)');return false" onclick="mostrarsolo1('searchtarget');document.getElementById('targetcb').checked = 'true';">Target</a>
-</div>
-
-<div class="form-group">
-<input type="radio" rel="keyword" name="mselector" value="keyword" id="keywordcb" onclick="mostrarsolo1('searchkey');" /> <a href="#" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'Search by keyword in fields: QTL and/or Metabolites and/or Hit Definition.');return false" onclick="mostrarsolo1('searchkey');document.getElementById('keywordcb').checked = 'true';">Keyword</a>
-</div>
 
 <div ID="searchbin">
 <h2>Search by Bin</h2> 

@@ -4,11 +4,8 @@
 
 from tempfile import mkstemp
 from bottle import route, run, static_file, get, post, request
-
 from bottle import cheetah_view as view
-
 import os
-
 import sys
 sys.path.append(os.path.realpath(__file__))
 from dbconn import TempTables, DBInterac
@@ -16,8 +13,6 @@ from index_template import index_template as it
 from cStringIO import StringIO
 from Bio.Blast.Applications import NcbiblastnCommandline as blastcli
 from Bio.Blast import NCBIXML
-
-#from Cheetah.Template import Template
 
 import cPickle
 import subprocess
@@ -115,7 +110,6 @@ def _carga_pubs(mirna):
             autores_l.append(conn.authorname(autorid))
         pubname = list(conn.articles(pubid))
         pubname[1] = conn.journals(pubname)
-        #[x[0] for x in c3.fetchall()]
         publicaciones.append((pubname,autores_l))
     conn.close()
     return publicaciones
@@ -142,7 +136,6 @@ def metayqtl(bin_):
         #sacar parte numerica de bin1
         bin2_letra = bin_.split('-')[1]
         bin2 = numero_bin + bin2_letra
-        #c3 = conn.cursor()
         metabolites_QTL_1 = conn.met_qtl(bin1)
         metabolites_QTL_2 = conn.met_qtl(bin2)
         if metabolites_QTL_1 and metabolites_QTL_2:
@@ -350,11 +343,7 @@ def targetResult(target=''):
 @post('/blastresult_ax')
 @view('blastresult_ax')
 def blastresult_ax():
-    #my_env = os.environ
-    #from Cheetah.Template import Template
-    #template_s = ''''''
-    
-    #b_exe = '/var/www/%s/htdocs/ncbi-blast-2.2.23+/bin/blastn'%BASE_URL
+
     b_exe = settings.BLASTN_EXE
     d = {'seq':request.forms.get('SEQUENCE',''),
          'eval':request.forms.get('EXPECT','10'),
@@ -362,10 +351,7 @@ def blastresult_ax():
     #return ('<pre>'+str(d)+'</pre>')
 
     _ws = '' if d['db']=='target' else 7 
-    ### WARNING Micro y micros
     b_db = os.path.join(settings.BLASTDB_PATH,'%s.fasta'%d['db'])
-
-    # hago el CLI
     if _ws:
         cli = str(blastcli(cmd=b_exe,db=b_db,evalue=d['eval'],word_size=_ws,outfmt=5)).split(' ')
     else:
@@ -383,60 +369,12 @@ def blastresult_ax():
                 lblast.append((align.hit_def, align.hsps[0].expect, align.hsps[0].score))
     except:
         pass
+        # TD: Error log
     d['lblast'] = lblast
     cl = (' '.join(cli)).replace(settings.BLASTDB_PATH,'')
     d['cl'] = cl
     
-    return d
-    
-
-def blastresult(req):
-    b_exe = '/var/www/%s/htdocs/ncbi-blast-2.2.23+/bin/blastn'%BASE_URL
-
-    
-    d = {'page_title':'BLAST results',
-         'page_type': 'blastresult', 
-         'seq':req.form.get('SEQUENCE',''),
-         'eval':req.form.get('EXPECT','10'),
-         'db':req.form.get('DB','micro')}
-         
-    _ws = ''
-    if d['db']=='micro':
-        b_db = '/var/www/%s/htdocs/micros.fasta'%BASE_URL
-        _ws = 7
-    elif d['db']=='target':
-        b_db = '/var/www/%s/htdocs/target.fasta'%BASE_URL
-    else:
-        b_db = '/var/www/%s/htdocs/precus.fasta'%BASE_URL
-        _ws = 7
-    # hago el CLI
-    if _ws:
-        cli = str(blastcli(cmd=b_exe,db=b_db,evalue=d['eval'],word_size=_ws,outfmt=5)).split(' ')
-    else:
-        cli = str(blastcli(cmd=b_exe,db=b_db,evalue=d['eval'],outfmt=5)).split(' ')
-    p = subprocess.Popen(cli, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    std = p.communicate(input=d['seq'])[0]
-    lblast = []
-    for rec in NCBIXML.parse(StringIO(std)):
-        for align in rec.alignments:
-            lblast.append((align.hit_def, align.hsps[0].expect, align.hsps[0].score))
-    
-    d['lblast'] = lblast
-    cl = (' '.join(cli)).replace('/var/www/%s/htdocs/'%BASE_URL,'')
-    d['cl'] = cl
-    dataout = it(searchList=[d])
-    return str(dataout)
-
-# FOR GET BINRESULT:
-"""
-    fromto = 'on'
-    metab = 'on'
-    C_hitDef = 'on'
-    C_alig = 'on'
-    C_exp = 'on'
-    C_xls = 'on'
-
-"""
+    return d    
 
 
 @post('/binResult')
@@ -573,22 +511,7 @@ def keywordResult():
     conn.close()
     return tpl_d
     
-'''    
-s = Selector(wrap=Yaro)
-s.add('/about', GET=about)
-s.add('/keywordResult', POST=keywordResult)
-s.add('/targetResult', POST=targetResult)
-s.add('/targetResult/{name}.{dot}', GET=targetResult)
-s.add('/targetResult/{name}', GET=targetResult)
-s.add('/help', GET=help)
-s.add('/blast', GET=blast)
-s.add('/blastresult', POST=blastresult)
-s.add('/blastresult_ax', POST=blastresult_ax)
-s.add('/binResult', POST=binResult)
-s.add('/binResult/{bin}', GET=binResult)
-s.add('/microResult', POST=microResult)
-s.add('/microResult/{mirna}', GET=microResult)
-'''
+
 run(host='localhost', port=8080)
 
 
