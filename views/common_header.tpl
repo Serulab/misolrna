@@ -7,6 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MiSolRNA</title>
 
+
+    <link rel="alternate" type="application/rss+xml" title="RSS"
+      href="http://www.misolrna.org/static/rss.xml">
+
     <!-- Bootstrap -->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
 

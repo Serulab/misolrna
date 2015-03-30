@@ -77,6 +77,10 @@ def about():
 def css_static(filename):
     return static_file(filename, root='%scss/'%STATIC_ROOT)
 
+@route('/static/rss.xml')
+def rss_static():
+    return static_file('rss.xml', root=STATIC_ROOT)
+
 @route('/static/fonts/<filename>')
 def fonts_static(filename):
     return static_file(filename, root='%sfonts/'%STATIC_ROOT)

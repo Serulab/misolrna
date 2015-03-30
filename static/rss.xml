@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<rss version="2.0">
+  <channel>
+    <title>miRNAdb updates</title>
+    <link>http://www.misolrna.org</link>
+    <description>Updates on the miRNAdb</description>
+
+<!--
+    <image>
+        <url>http://www.xul.fr/xul-icon.gif</url>
+        <link>http://www.xul.fr/index.html</link>
+    </image>
+-->
+
+    <item>
+       <title>New SGN</title>
+       <link>http://www.misolrna.org</link> 
+       <description>SGN data uploaded!</description>
+    </item>
+
+  </channel>
+</rss>
