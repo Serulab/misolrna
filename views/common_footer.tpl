@@ -1,6 +1,32 @@
 
 </div>
 
+
+<div class="container">
+
+<div class="row">
+  <div class="col-md-2">
+
+    <a href="http://www.bithosting.pw"><img src="/${STATIC_URL}/imgs/powered_1.png"></a>
+
+  </div>
+  <div class="col-md-9"></div>
+
+
+  <div class="col-md-1">
+
+
+
+    <a href="/${STATIC_URL}/rss.xml"><i class="fa fa-rss fa-3x"></i></a>
+</div>
+</div>
+
+
+
+
+</div>
+
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

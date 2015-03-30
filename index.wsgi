@@ -88,17 +88,21 @@ def fonts_static(filename):
 @route('/static/js/<filename>')
 def js_static(filename):
     return static_file(filename, root='%sjs/'%STATIC_ROOT)  
-    
+
+@get('/static/imgs/<filename:re:.*\.png>')
+def imagesall(filename):
+    return static_file(filename, root='static/imgs/')    
+
 @get('/static/imgs/aligns/<filename:re:.*\.png>')
-def images(filename):
+def imagesal(filename):
     return static_file(filename, root='static/imgs/aligns/')
 
 @get('/static/imgs/exp/<filename:re:.*\.png>')
-def images(filename):
+def imagesexp(filename):
     return static_file(filename, root='static/imgs/exp/')
 
 @get('/static/xls/<filename:re:.*\.(xls)>')
-def images(filename):
+def xlsfiles(filename):
     return static_file(filename, root='static/xls/')    
 
 
