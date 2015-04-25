@@ -25,7 +25,11 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-s', '--settings', help='setting file',
                     required=True)
 args = parser.parse_args()
-settings = __import__(args.settings)
+try:
+    settings = __import__(args.settings)
+except ImportError:
+    print "Format of settings: local_mac (without path and without .py"
+    exit()
 
 BASE_URL = settings.BASE_URL
 ROOT_DIR = settings.ROOT_DIR
