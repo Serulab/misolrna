@@ -5,6 +5,7 @@
 
 import sys
 import os
+import argparse
 sys.path.append(os.path.realpath(__file__))
 
 sys.path.append('settings')
@@ -40,7 +41,6 @@ from Bio.Blast import NCBIXML
 
 import cPickle
 import subprocess
-import argparse
 
 
 
