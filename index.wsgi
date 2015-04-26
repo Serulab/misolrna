@@ -26,6 +26,8 @@ parser.add_argument('-s', '--settings', help='setting file',
                     required=False)
 args = parser.parse_args()
 
+is_server = False
+
 if args.settings:
     try:
         settings = __import__(args.settings)
@@ -34,9 +36,8 @@ if args.settings:
         exit()
 else:
     # Assume ths is running in Apache server
+    is_server = True
     settings = __import__('server')
-
-print settings
 
 BASE_URL = settings.BASE_URL
 ROOT_DIR = settings.ROOT_DIR
@@ -530,7 +531,7 @@ def keywordResult():
     conn.close()
     return tpl_d
     
-
-run(host='localhost', port=8080)
+if not is_server:
+    run(host='localhost', port=8080)
 
 
