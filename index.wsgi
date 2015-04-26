@@ -2,22 +2,10 @@
 
 # LICENSE: AGPL 3.0. Sebastian Bassi
 
-from tempfile import mkstemp
-from bottle import route, run, static_file, get, post, request
-from bottle import cheetah_view as view
-import os
+
 import sys
+import os
 sys.path.append(os.path.realpath(__file__))
-from dbconn import TempTables, DBInterac
-from index_template import index_template as it
-from cStringIO import StringIO
-from Bio.Blast.Applications import NcbiblastnCommandline as blastcli
-from Bio.Blast import NCBIXML
-
-import cPickle
-import subprocess
-import argparse
-
 
 sys.path.append('settings')
 
@@ -38,6 +26,24 @@ else:
     # Assume ths is running in Apache server
     is_server = True
     settings = __import__('server')
+    import site
+    site.addsitedir(settings.venvs)
+
+from tempfile import mkstemp
+from bottle import route, run, static_file, get, post, request
+from bottle import cheetah_view as view
+from dbconn import TempTables, DBInterac
+from index_template import index_template as it
+from cStringIO import StringIO
+from Bio.Blast.Applications import NcbiblastnCommandline as blastcli
+from Bio.Blast import NCBIXML
+
+import cPickle
+import subprocess
+import argparse
+
+
+
 
 BASE_URL = settings.BASE_URL
 ROOT_DIR = settings.ROOT_DIR
