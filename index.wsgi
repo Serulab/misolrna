@@ -533,5 +533,8 @@ def keywordResult():
     
 if not is_server:
     run(host='localhost', port=8080)
+else:
+    import bottle
+    application = bottle.default_app()
 
 
