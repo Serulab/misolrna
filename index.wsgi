@@ -23,13 +23,20 @@ sys.path.append('settings')
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-s', '--settings', help='setting file',
-                    required=True)
+                    required=False)
 args = parser.parse_args()
-try:
-    settings = __import__(args.settings)
-except ImportError:
-    print "Format of settings: local_mac (without path and without .py"
-    exit()
+
+if args.settings:
+    try:
+        settings = __import__(args.settings)
+    except ImportError:
+        print "Format of settings: local_mac (without path and without .py"
+        exit()
+else:
+    # Assume ths is running in Apache server
+    settings = __import__('server')
+
+print settings
 
 BASE_URL = settings.BASE_URL
 ROOT_DIR = settings.ROOT_DIR
