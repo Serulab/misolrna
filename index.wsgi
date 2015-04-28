@@ -13,7 +13,7 @@ import argparse
 #logging.debug('sys.path before: ' + str(sys.path))
 sys.path.append(os.path.realpath(__file__))
 sys.path.append(os.path.dirname(__file__))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'settings')
+sys.path.append(os.path.join(os.path.dirname(__file__), 'settings'))
 
 #sys.path.append('settings')
 
