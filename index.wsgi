@@ -5,6 +5,8 @@
 
 import sys
 import os
+import bottle
+bottle.debug(True)
 import argparse
 sys.path.append(os.path.realpath(__file__))
 
