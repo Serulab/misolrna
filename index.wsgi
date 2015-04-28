@@ -9,7 +9,7 @@ import argparse
 sys.path.append(os.path.realpath(__file__))
 
 sys.path.append('settings')
-
+print sys.path
 parser = argparse.ArgumentParser()
 parser.add_argument('-s', '--settings', help='setting file',
                     required=False)
@@ -19,6 +19,7 @@ is_server = False
 
 if args.settings:
     try:
+        print args.settings
         settings = __import__(args.settings)
     except ImportError:
         print "Format of settings: local_mac (without path and without .py"
