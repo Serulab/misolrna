@@ -40,6 +40,7 @@ else:
     is_server = True
     settings = __import__('server')
     import site
+    os.chdir(my_dir)
     site.addsitedir(settings.VENVS)
     bottle.TEMPLATE_PATH.insert(0, os.path.join(my_dir, 'views'))
 
@@ -61,9 +62,6 @@ ROOT_DIR = settings.ROOT_DIR
 DB_NAME = settings.DB_NAME
 STATIC_ROOT = settings.STATIC_ROOT
 STATIC_URL = settings.STATIC_URL
-
-os.chdir(my_dir)
-
 EXPRESSION_S = settings.EXPRESSION_S
 
 @route('/')
