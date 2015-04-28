@@ -12,11 +12,13 @@ bottle.debug(True)
 import argparse
 #logging.debug('sys.path before: ' + str(sys.path))
 sys.path.append(os.path.realpath(__file__))
-sys.path.append(os.path.dirname(__file__))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'settings'))
+
+my_dir = os.path.dirname(__file__)
+sys.path.append(my_dir)
+
+sys.path.append(os.path.join(my_dir, 'settings'))
 
 #sys.path.append('settings')
-
 #logging.debug('sys.path after: ' + str(sys.path))
 parser = argparse.ArgumentParser()
 parser.add_argument('-s', '--settings', help='setting file',
@@ -39,7 +41,7 @@ else:
     settings = __import__('server')
     import site
     site.addsitedir(settings.VENVS)
-    bottle.TEMPLATE_PATH.insert(0, os.path.join(os.path.dirname(__file__), 'views'))
+    bottle.TEMPLATE_PATH.insert(0, os.path.join(my_dir, 'views'))
 
 from tempfile import mkstemp
 from bottle import route, run, static_file, get, post, request
@@ -54,15 +56,13 @@ import cPickle
 import subprocess
 
 
-
-
 BASE_URL = settings.BASE_URL
 ROOT_DIR = settings.ROOT_DIR
 DB_NAME = settings.DB_NAME
 STATIC_ROOT = settings.STATIC_ROOT
 STATIC_URL = settings.STATIC_URL
 
-#os.chdir(rootdir)
+os.chdir(my_dir)
 
 EXPRESSION_S = settings.EXPRESSION_S
 
