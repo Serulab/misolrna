@@ -7,15 +7,17 @@ import sys
 import os
 import bottle
 
-logging.basicConfig(filename='/tmp/example.log',level=logging.DEBUG)
+#logging.basicConfig(filename='/tmp/example.log',level=logging.DEBUG)
 bottle.debug(True)
 import argparse
-logging.debug('sys.path before: ' + str(sys.path))
+#logging.debug('sys.path before: ' + str(sys.path))
 sys.path.append(os.path.realpath(__file__))
+sys.path.append(os.path.dirname(__file__))
+sys.path.append(os.path.join(os.path.dirname(__file__), 'settings')
 
-sys.path.append('settings')
+#sys.path.append('settings')
 
-logging.debug('sys.path after: ' + str(sys.path))
+#logging.debug('sys.path after: ' + str(sys.path))
 parser = argparse.ArgumentParser()
 parser.add_argument('-s', '--settings', help='setting file',
                     required=False)
@@ -36,7 +38,7 @@ else:
     is_server = True
     settings = __import__('server')
     import site
-    site.addsitedir(settings.venvs)
+    site.addsitedir(settings.VENVS)
 
 from tempfile import mkstemp
 from bottle import route, run, static_file, get, post, request
