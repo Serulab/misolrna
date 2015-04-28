@@ -15,12 +15,13 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-s', '--settings', help='setting file',
                     required=False)
 args = parser.parse_args()
-sys.stderr.write('args.settings: ' + args.settings)
+
 is_server = False
 
 if args.settings:
     try:
         #print args.settings
+        sys.stderr.write('args.settings: ' + args.settings)
         settings = __import__(args.settings)
     except ImportError:
         print "Format of settings: local_mac (without path and without .py"
