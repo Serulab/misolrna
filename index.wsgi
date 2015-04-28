@@ -39,6 +39,7 @@ else:
     settings = __import__('server')
     import site
     site.addsitedir(settings.VENVS)
+    bottle.TEMPLATE_PATH.insert(0, os.path.join(os.path.dirname(__file__), 'views'))
 
 from tempfile import mkstemp
 from bottle import route, run, static_file, get, post, request
