@@ -2,17 +2,20 @@
 
 # LICENSE: AGPL 3.0. Sebastian Bassi
 
-
+import logging
 import sys
 import os
 import bottle
+
+logging.basicConfig(filename='example.log',level=logging.DEBUG)
 bottle.debug(True)
 import argparse
 sys.path.append(os.path.realpath(__file__))
 
 sys.path.append('settings')
 
-sys.stderr.write('sys.path: ' + str(sys.path))
+#sys.stderr.write('sys.path: ' + str(sys.path))
+logging.debug('sys.path: ' + str(sys.path))
 parser = argparse.ArgumentParser()
 parser.add_argument('-s', '--settings', help='setting file',
                     required=False)
