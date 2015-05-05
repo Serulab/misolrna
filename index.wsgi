@@ -42,7 +42,8 @@ else:
     import site
     os.chdir(my_dir)
     site.addsitedir(settings.VENVS)
-    bottle.TEMPLATE_PATH.insert(0, os.path.join(my_dir, 'views'))
+
+bottle.TEMPLATE_PATH.insert(0, os.path.join(my_dir, 'views'))
 
 from tempfile import mkstemp
 from bottle import route, run, static_file, get, post, request
