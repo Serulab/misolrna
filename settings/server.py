@@ -1,6 +1,8 @@
 import os
 from common import *
 
+TEMPLATE_PATH = '/var/www/misolrna.org.v2/misolrna/views/'
+
 #STATIC_ROOT = '/Users/sbassi/projects/serulab/misolrna/static/'
 STATIC_ROOT = '/var/www/misolrna.org.v2/misolrna/static/'
 
