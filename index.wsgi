@@ -32,6 +32,7 @@ if args.settings:
         #print args.settings
         sys.stderr.write('args.settings: ' + args.settings)
         settings = __import__(args.settings)
+        bottle.TEMPLATE_PATH.insert(0, os.path.join(my_dir, 'views'))
     except ImportError:
         print "Format of settings: local_mac (without path and without .py"
         exit()
@@ -42,8 +43,7 @@ else:
     import site
     os.chdir(my_dir)
     site.addsitedir(settings.VENVS)
-
-bottle.TEMPLATE_PATH.insert(0, os.path.join(my_dir, 'views'))
+    bottle.TEMPLATE_PATH.insert(0, settings.TEMPLATE_PATH)
 
 from tempfile import mkstemp
 from bottle import route, run, static_file, get, post, request
